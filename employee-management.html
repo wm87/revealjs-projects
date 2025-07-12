@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>employee-management</title>
+
+	<!-- Reveal.js Stylesheet -->
+	<link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+	<link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/beige.css" id="theme">
+
+	<!-- Reveal.js -->
+	<script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+
+	<!-- Reveal.js Plugins -->
+	<script src="https://unpkg.com/reveal.js/plugin/notes/notes.js"></script>
+	<script src="https://unpkg.com/reveal.js/plugin/markdown/markdown.js"></script>
+	<script src="https://unpkg.com/reveal.js/plugin/math/math.js"></script>
+	<script src="https://unpkg.com/reveal.js/plugin/pdf/pdf.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/reveal.js/plugin/highlight/monokai.css" />
+	<script src="https://unpkg.com/reveal.js/plugin/highlight/highlight.js"></script>
+
+	<script>
+		function switchTheme() {
+			let themes = [
+				'solarized',
+				'beige',
+				'moon',
+				'league',
+				'white'
+			];
+
+			let themeElement = document.getElementById('theme');
+			let currentTheme = themeElement.getAttribute('href').split('/').pop().split('.css')[0];
+			let nextTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
+			themeElement.setAttribute('href', `https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/${nextTheme}.css`);
+		}
+
+		// Warten bis das DOM vollständig geladen ist
+		document.addEventListener("DOMContentLoaded", function () {
+
+			// Funktion, um das aktuelle Datum zu holen
+			function getCurrentDate() {
+				var options = { year: 'numeric', month: 'long', day: 'numeric' };
+				var today = new Date();
+				return today.toLocaleDateString('de-DE', options);
+			}
+
+			// Datum auf der Titelfolie einfügen
+			document.getElementById("current-date").innerText = getCurrentDate();
+
+			// Reveal.js initialisieren
+			Reveal.initialize({
+				autoSlide: 10000,			// Wechselt alle 10 Sekunden
+				loop: false,				// Stoppt am Ende
+				autoSlideStoppable: true, 	// Erlaubt manuelles Stoppen
+				controls: true,      		// Steuerungselemente anzeigen
+				progress: true,             // Fortschrittsbalken anzeigen
+				slideNumber: true,          // Foliennummern anzeigen
+				hash: true,                 // Folien als URL-Hash darstellen
+				history: true,              // Historie der Folien im Browser
+				center: true,   	        // Folien zentrieren
+				transition: 'convex',         // Übergangseffekt
+				//transitionSpeed: 'slow',    // Übergangsgeschwindigkeit
+				plugins: [RevealNotes, RevealHighlight, RevealMarkdown],
+				slideNumber: true  // Zeigt Seitenzahlen an
+			});
+
+			Reveal.configure({ pdfMaxPagesPerSlide: 1 });
+			Reveal.configure({ pdfSeparateFragments: false });
+		});
+	</script>
+
+	<style>
+		.reveal .slide-number {
+			font-size: 22px;
+			text-align: center;
+			font-weight: bold;
+			position: absolute;
+			right: 2px;
+			bottom: 10px;
+		}
+
+		/* Progress-Bar höher setzen */
+		.reveal .progress {
+			height: 8px;
+		}
+
+		/* Navigationspfeile einfärben */
+		.reveal .controls .navigate-left,
+		.reveal .controls .navigate-right,
+		.reveal .controls .navigate-up,
+		.reveal .controls .navigate-down {
+			margin-right: 30px;
+		}
+
+		#pdf-export-btn {
+			border-radius: 5px;
+			background-color: transparent;
+			cursor: pointer;
+			height: 40px;
+		}
+
+		/* Layout-Button-Styling */
+		#layout-btn {
+			border: none;
+			background-color: transparent;
+			padding: 8px;
+			border-radius: 5px;
+			cursor: pointer;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+		}
+
+		#pdf-export-btn:hover,
+		#layout-btn:hover {
+			color: black;
+			background-color: #e7e7e5;
+		}
+
+		header {
+			position: fixed;
+			left: 0;
+			padding-left: 5px;
+			top: 0;
+			width: 100%;
+			color: black;
+			text-align: center;
+			font-size: 20px;
+			z-index: 2;
+		}
+
+		footer {
+			position: fixed;
+			left: 0;
+			bottom: 5px;
+			width: 100%;
+			height: 55px;
+			justify-items: center;
+			color: rgb(48, 119, 119);
+			text-align: center;
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<button id="layout-btn" onclick="switchTheme()">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#c28e5e"
+				stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+				<circle cx="6" cy="6" r="3"></circle>
+				<circle cx="18" cy="6" r="3"></circle>
+				<circle cx="6" cy="18" r="3"></circle>
+				<circle cx="18" cy="18" r="3"></circle>
+			</svg>
+		</button>
+	</header>
+	<div class="reveal">
+		<div class="slides">
+
+
+			<!-- Titelfolie -->
+			<section>
+				<h1>Employee-Management</h1>
+				<p>Moderne WPF-Anwendung zur Verwaltung von Personendaten</p>
+			</section>
+
+			<!-- Überblick -->
+			<section>
+				<h2>🚀 Projektüberblick</h2>
+				<ul>
+					<li>WPF-Anwendung mit C# (.NET 8)</li>
+					<li>MVVM-Architektur</li>
+					<li>MySQL & Elasticsearch (Docker-basiert)</li>
+					<li>Flexible Datenquellen: MySQL, JSON, XML</li>
+					<li>Live-Suche, Paging, Reindex</li>
+				</ul>
+			</section>
+
+			<!-- Technologien -->
+			<section>
+				<h2>🧠 Technologien im Überblick</h2>
+				<ul>
+					<li><strong>MVVM</strong> – Trennung von Logik & UI</li>
+					<li><strong>C#</strong> – Hauptprogrammiersprache</li>
+					<li><strong>Entity Framework Core</strong> – ORM für Datenbankzugriff</li>
+					<li><strong>MySQL</strong> – Persistente Datenspeicherung</li>
+					<li><strong>Elasticsearch</strong> – Schnelle Filterung & Indizierung</li>
+					<li><strong>Docker</strong> – Infrastrukturcontainerisierung</li>
+				</ul>
+			</section>
+
+			<!-- MVVM erklärt -->
+			<section>
+				<h2>🔧 MVVM</h2>
+				<ul>
+					<li><strong>Model:</strong> Repräsentiert die Daten (z. B. Person)</li>
+					<li><strong>View:</strong> UI – WPF-Oberfläche</li>
+					<li><strong>ViewModel:</strong> Bindeglied mit Logik & Commands</li>
+				</ul>
+				<p>➡️ Wartbar, testbar und erweiterbar</p>
+			</section>
+
+			<!-- Docker Setup -->
+			<section>
+				<h2>🐳 Docker Setup</h2>
+				<p><strong>docker-compose</strong> startet Elasticsearch & MySQL</p>
+				<pre><code class="yaml">services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
+    ports:
+      - "9200:9200"
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+</code></pre>
+			</section>
+
+			<!-- Start der Container -->
+			<section>
+				<h2>▶️ Container starten</h2>
+				<pre><code class="bash">cd DB_ES
+docker-compose up -d</code></pre>
+				<p>📦 Elasticsearch & MySQL werden im Hintergrund ausgeführt</p>
+			</section>
+
+			<!-- Datenimport -->
+			<section>
+				<h2>📥 Datenimport (Dummy-Daten)</h2>
+				<ul>
+					<li>Program.cs importiert bis zu 1 Mio. Dummy-Personen</li>
+					<li>Attribute: Name, Geschlecht, Abteilung, Geburtsdatum</li>
+					<li>MySQL wird automatisch via EF Core strukturiert</li>
+				</ul>
+			</section>
+
+			<!-- Funktionen -->
+			<section>
+				<h2>📊 Funktionen der Anwendung</h2>
+				<ul>
+					<li>DataGrid mit CRUD-Funktionalität</li>
+					<li>Datenquellenumschaltung (MySQL, JSON, XML)</li>
+					<li>Live-Filterung mit Elasticsearch</li>
+					<li>Elasticsearch Reindex nach Import</li>
+					<li>Paging: 1.000 Datensätze pro Seite</li>
+				</ul>
+			</section>
+
+			<!-- Filterung -->
+			<section>
+				<h2>🔍 Live-Filterung</h2>
+				<p>Elasticsearch ermöglicht schnelles Suchen nach:</p>
+				<ul>
+					<li>Name</li>
+					<li>Vorname</li>
+				</ul>
+				<p>Reindex sorgt für Aktualität nach Import</p>
+			</section>
+
+			<!-- App starten -->
+			<section>
+				<h2>💻 WPF-App starten</h2>
+				<ul>
+					<li>Projekt-Ordner: <code>WpfApp</code></li>
+					<li>Start über Visual Studio (mit .NET 8)</li>
+				</ul>
+				<p>Voraussetzung: Docker & .NET Desktop Runtime</p>
+			</section>
+
+			<!-- Fazit -->
+			<section>
+				<h2>✅ Fazit</h2>
+				<ul>
+					<li>Moderne Architektur mit .NET, EF Core, MVVM</li>
+					<li>Hohe Skalierbarkeit durch Docker & Elasticsearch</li>
+					<li>Vielseitige Datenquellen & intuitive Oberfläche</li>
+				</ul>
+				<p>🔗 Bereit für den produktiven Einsatz?</p>
+			</section>
+
+
+			<!-- Abschluss-Seite -->
+			<section data-transition="convex">
+				<h2 style="color: #89cfdb; font-size: 3em; text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);">
+					Vielen Dank!
+				</h2>
+
+				<p style="color: #000000; font-size: 1.5em;">Bleib in Kontakt – Ich freue mich auf dein Feedback!</p>
+
+				<div style="display: flex; justify-content: center; gap: 30px; margin-top: 30px;">
+					<a href="https://github.com/wm87" target="_blank" style="text-decoration: none;">
+						<div
+							style="background: #24292E; padding: 15px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+							<i class="fab fa-github" style="color: #ffffff; font-size: 2em;"></i>
+							<span style="color: #ffffff; font-size: 1.2em;">GitHub</span>
+						</div>
+					</a>
+
+					<a href="mailto:mwf102.mw@gmail.com" style="text-decoration: none;">
+						<div
+							style="background: #D44638; padding: 15px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+							<i class="fas fa-envelope" style="color: #ffffff; font-size: 2em;"></i>
+							<span style="color: #ffffff; font-size: 1.2em;">E-Mail</span>
+						</div>
+					</a>
+				</div>
+
+				<p style="margin-top: 50px; font-size: 1em; color: #000000;">Folien erstellt mit Reveal.js 🚀</p>
+			</section>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer>
+		<p style="
+		background-color: rgba(238, 236, 228, 0.842);
+		padding: 5px 10px;
+		border-radius: 8px;
+		margin: 5px;
+		display: inline-block;
+		">
+			„Employee-Management“ | Referent X,Y | <span id="current-date"></span>
+		</p>
+	</footer>
+</body>
+
+</html>
