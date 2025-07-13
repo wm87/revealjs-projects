@@ -1,6 +1,6 @@
-# 🎤 Präsentation mit Reveal.js – „Employee-Management“
+# 🎤 Präsentationen mit Reveal.js
 
-Diese Präsentation wurde mit [Reveal.js](https://revealjs.com) erstellt – einem modernen, browserbasierten Framework für interaktive und anpassbare Präsentationen.
+Die Präsentationen sind mit [Reveal.js](https://revealjs.com) erstellt – einem modernen, browserbasierten Framework für interaktive und anpassbare Präsentationen.
 
 ---
 
@@ -16,9 +16,7 @@ PowerPoint ist weit verbreitet – aber **Reveal.js bietet entscheidende Vorteil
 
 ---
 
-## 🧰 Funktionen dieser Präsentation
-
-Diese Reveal.js-Präsentation demonstriert ein modernes **WPF-Projekt zur Mitarbeiterverwaltung**. Sie enthält:
+## 🧰 Funktionen von Reveal.js
 
 - **Moderne UI** mit dem Reveal.js-Framework
 - **Live-Code-Highlighting** (YAML, Bash, C#)

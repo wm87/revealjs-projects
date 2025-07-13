@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>WMS-Dienste Open Data</title>
+
+	<!-- Reveal.js Stylesheet -->
+	<link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+	<link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/beige.css" id="theme">
+
+	<!-- Reveal.js -->
+	<script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+
+	<!-- Reveal.js Plugins -->
+	<script src="https://unpkg.com/reveal.js/plugin/notes/notes.js"></script>
+	<script src="https://unpkg.com/reveal.js/plugin/markdown/markdown.js"></script>
+	<script src="https://unpkg.com/reveal.js/plugin/math/math.js"></script>
+	<script src="https://unpkg.com/reveal.js/plugin/pdf/pdf.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/reveal.js/plugin/highlight/monokai.css" />
+	<script src="https://unpkg.com/reveal.js/plugin/highlight/highlight.js"></script>
+
+	<script>
+		function switchTheme() {
+			let themes = [
+				'solarized',
+				'beige',
+				'moon',
+				'league',
+				'white'
+			];
+
+			let themeElement = document.getElementById('theme');
+			let currentTheme = themeElement.getAttribute('href').split('/').pop().split('.css')[0];
+			let nextTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
+			themeElement.setAttribute('href', `https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/${nextTheme}.css`);
+		}
+
+		// Warten bis das DOM vollständig geladen ist
+		document.addEventListener("DOMContentLoaded", function () {
+
+			// Funktion, um das aktuelle Datum zu holen
+			function getCurrentDate() {
+				var options = { year: 'numeric', month: 'long', day: 'numeric' };
+				var today = new Date();
+				return today.toLocaleDateString('de-DE', options);
+			}
+
+			// Datum auf der Titelfolie einfügen
+			document.getElementById("current-date").innerText = getCurrentDate();
+
+			// Reveal.js initialisieren
+			Reveal.initialize({
+				autoSlide: 10000,			// Wechselt alle 10 Sekunden
+				loop: false,				// Stoppt am Ende
+				autoSlideStoppable: true, 	// Erlaubt manuelles Stoppen
+				controls: true,      		// Steuerungselemente anzeigen
+				progress: true,             // Fortschrittsbalken anzeigen
+				slideNumber: true,          // Foliennummern anzeigen
+				hash: true,                 // Folien als URL-Hash darstellen
+				history: true,              // Historie der Folien im Browser
+				center: true,   	        // Folien zentrieren
+				transition: 'convex',         // Übergangseffekt
+				//transitionSpeed: 'slow',    // Übergangsgeschwindigkeit
+				plugins: [RevealNotes, RevealHighlight, RevealMarkdown],
+				slideNumber: true  // Zeigt Seitenzahlen an
+			});
+
+			Reveal.configure({ pdfMaxPagesPerSlide: 1 });
+			Reveal.configure({ pdfSeparateFragments: false });
+		});
+	</script>
+
+	<style>
+		.reveal .slide-number {
+			font-size: 22px;
+			text-align: center;
+			font-weight: bold;
+			position: absolute;
+			right: 2px;
+			bottom: 10px;
+		}
+
+		/* Progress-Bar höher setzen */
+		.reveal .progress {
+			height: 8px;
+		}
+
+		/* Navigationspfeile einfärben */
+		.reveal .controls .navigate-left,
+		.reveal .controls .navigate-right,
+		.reveal .controls .navigate-up,
+		.reveal .controls .navigate-down {
+			margin-right: 30px;
+		}
+
+		#pdf-export-btn {
+			border-radius: 5px;
+			background-color: transparent;
+			cursor: pointer;
+			height: 40px;
+		}
+
+		/* Layout-Button-Styling */
+		#layout-btn {
+			border: none;
+			background-color: transparent;
+			padding: 8px;
+			border-radius: 5px;
+			cursor: pointer;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+		}
+
+		#pdf-export-btn:hover,
+		#layout-btn:hover {
+			color: black;
+			background-color: #e7e7e5;
+		}
+
+		header {
+			position: fixed;
+			left: 0;
+			padding-left: 5px;
+			top: 0;
+			width: 100%;
+			color: black;
+			text-align: center;
+			font-size: 20px;
+			z-index: 2;
+		}
+
+		footer {
+			position: fixed;
+			left: 0;
+			bottom: 5px;
+			width: 100%;
+			height: 55px;
+			justify-items: center;
+			color: rgb(48, 119, 119);
+			text-align: center;
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<button id="layout-btn" onclick="switchTheme()">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#c28e5e"
+				stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+				<circle cx="6" cy="6" r="3"></circle>
+				<circle cx="18" cy="6" r="3"></circle>
+				<circle cx="6" cy="18" r="3"></circle>
+				<circle cx="18" cy="18" r="3"></circle>
+			</svg>
+		</button>
+	</header>
+	<div class="reveal">
+		<div class="slides">
+
+
+			<section>
+				<h1>WMS-Dienste auf Basis von Open Data</h1>
+				<p>Geobasierte Informationsbereitstellung durch MapServer & Open Data</p>
+				<p><strong>Autor: [Dein Name]</strong></p>
+			</section>
+
+			<section>
+				<h2>Web Map Services (WMS)</h2>
+				<ul>
+					<li>OGC-konformer Standard zur Bereitstellung von Kartendiensten</li>
+					<li>Visualisierung georeferenzierter Daten als Kartenbilder</li>
+					<li>Einbindung in GIS-Anwendungen wie QGIS oder OpenLayers</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Ziel des Projekts</h2>
+				<ul>
+					<li>Bereitstellung ausgewählter WMS-Dienste auf Open-Data-Basis</li>
+					<li>Beispielhafte Darstellung: Bodenrichtwerte, Freizeitdaten</li>
+					<li>Technische Umsetzung via MapServer, PostGIS, GDAL</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Genutzte Datenquellen</h2>
+				<ul>
+					<li>LGB Brandenburg: <a href="https://geobroker.geobasis-bb.de">geobroker.geobasis-bb.de</a></li>
+					<li>OpenGeodata NRW: <a href="https://opengeodata.nrw.de">opengeodata.nrw.de</a></li>
+					<li>ogc-api.nrw: <a href="https://ogc-api.nrw.de/tfis/v1">ogc-api.nrw.de</a></li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Technologie-Stack</h2>
+				<ul>
+					<li><strong>MapServer</strong> 8.4.0 – WMS-Dienst</li>
+					<li><strong>PostgreSQL/PostGIS</strong> 17 / 3.5</li>
+					<li><strong>GDAL</strong> 3.10, <strong>PROJ</strong> 9.5</li>
+					<li><strong>Docker & Bash</strong> für Automatisierung</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Installation & Ausführung</h2>
+				<pre><code class="bash">
+bash build.sh
+docker-compose up db importer
+          </code></pre>
+				<p>Erfordert: Docker, Bash, Zugang zu Rohdaten</p>
+			</section>
+
+			<section>
+				<h2>Debugging & Testaufrufe</h2>
+				<pre><code class="bash">
+docker logs pg
+
+docker exec -it mapserver tail -f /var/log/mapserver.log
+
+# Testaufruf der Capabilties des BORIS-Dienstes
+curl "http://localhost:8081/wms/bb/boris_bb.fcgi?SERVICE=WMS&REQUEST=GetCapabilities"
+curl "http://localhost:8081/wms/nrw/boris_nrw.fcgi?SERVICE=WMS&REQUEST=GetCapabilities"
+          </code></pre>
+			</section>
+
+			<section>
+				<h2>Nutzung in QGIS</h2>
+				<ul>
+					<li>BORIS BB: http://localhost:8081/wms/bb/boris_bb.fcgi?</li>
+					<li>BORIS NRW: http://localhost:8081/wms/nrw/boris_nrw.fcgi?</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>TFIS NRW: Symbolautomatisierung</h2>
+				<ul>
+					<li>Python-Skript erzeugt WMS Mapfile automatisch</li>
+					<li>Verwendet Mapbox-Sprites + GeoJSON-Dateien</li>
+					<li>Konvertierung zu MapServer-konformen Symbolen</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Verarbeitung der Symbole</h2>
+				<ul>
+					<li>PNG-Icons aus Mapbox-Sprites extrahieren</li>
+					<li>Symbolblöcke für MapServer generieren</li>
+					<li>Layerstruktur: Linien- und Punktdaten typisiert</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Automatisierungsskript (Python)</h2>
+				<pre><code class="python">
+if __name__ == "__main__":
+    generate_files()
+          </code></pre>
+				<p>→ erzeugt: <code>wms_tfis_nrw.map</code>, <code>symbols.map</code>, PNG-Icons</p>
+			</section>
+
+			<section>
+				<h2>Anwendungsfelder</h2>
+				<ul>
+					<li>Tourismus & Freizeit (POIs, Wanderwege, Schifffahrt)</li>
+					<li>Einbindung in QGIS, OpenLayers, ArcGIS</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Zusammenfassung</h2>
+				<ul>
+					<li>Effiziente Bereitstellung öffentlicher Geodaten als WMS</li>
+					<li>Vollständig automatisierte Symbolgenerierung</li>
+					<li>Skalierbare Lösung mit Docker & MapServer</li>
+					<li>OGC-konform</li>
+				</ul>
+			</section>
+
+			<section>
+				<p>Vielen Dank für Ihre Aufmerksamkeit!</p>
+				<h2>Fragen?</h2>
+			</section>
+
+
+			<!-- Abschluss-Seite -->
+			<section data-transition="convex">
+				<h2 style="color: #89cfdb; font-size: 3em; text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);">
+					Vielen Dank!
+				</h2>
+
+				<p style="color: #000000; font-size: 1.5em;">Bleib in Kontakt – Ich freue mich auf dein Feedback!</p>
+
+				<div style="display: flex; justify-content: center; gap: 30px; margin-top: 30px;">
+					<a href="https://github.com/wm87" target="_blank" style="text-decoration: none;">
+						<div
+							style="background: #24292E; padding: 15px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+							<i class="fab fa-github" style="color: #ffffff; font-size: 2em;"></i>
+							<span style="color: #ffffff; font-size: 1.2em;">GitHub</span>
+						</div>
+					</a>
+
+					<a href="mailto:mwf102.mw@gmail.com" style="text-decoration: none;">
+						<div
+							style="background: #D44638; padding: 15px 20px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+							<i class="fas fa-envelope" style="color: #ffffff; font-size: 2em;"></i>
+							<span style="color: #ffffff; font-size: 1.2em;">E-Mail</span>
+						</div>
+					</a>
+				</div>
+
+				<p style="margin-top: 50px; font-size: 1em; color: #000000;">Folien erstellt mit Reveal.js 🚀</p>
+			</section>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer>
+		<p style="
+		background-color: rgba(238, 236, 228, 0.842);
+		padding: 5px 10px;
+		border-radius: 8px;
+		margin: 5px;
+		display: inline-block;
+		">
+			„WMS-Dienste Open Data“ | Referent X,Y | <span id="current-date"></span>
+		</p>
+	</footer>
+</body>
+
+</html>
